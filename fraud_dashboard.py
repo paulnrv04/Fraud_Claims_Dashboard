@@ -237,20 +237,33 @@ def main():
         # Date range filter
         min_date = df['AttendingDate'].min()
         max_date = df['AttendingDate'].max()
-        
+
+        # Calculate default date range (last 5 months from max date)
+        default_end_date = max_date
+        default_start_date = max_date - pd.DateOffset(months=5)
+
+        # Ensure start date doesn't go before min_date
+        if default_start_date < min_date:
+            default_start_date = min_date
+
         date_range = st.date_input(
             "Select Date Range:",
-            value=(min_date, max_date),
+            value=(default_start_date, default_end_date),
             min_value=min_date,
             max_value=max_date,
             help="Filter claims by attending date"
         )
-        
+
+        # Apply date filter
         if len(date_range) == 2:
             start_date, end_date = pd.to_datetime(date_range[0]), pd.to_datetime(date_range[1])
             df_filtered = df[(df['AttendingDate'] >= start_date) & (df['AttendingDate'] <= end_date)]
         else:
             df_filtered = df
+
+        # Display the OVERALL dataset date range (from the original unfiltered data)
+        st.caption(f"Dataset Start Date: {min_date.strftime('%Y-%m-%d')}")
+        st.caption(f"Dataset End Date: {max_date.strftime('%Y-%m-%d')}")
         
         # Provider filter
         all_providers = ['All Providers'] + sorted(df_filtered['Provider'].unique().tolist())
