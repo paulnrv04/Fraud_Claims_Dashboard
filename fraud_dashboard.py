@@ -379,7 +379,7 @@ def main():
         "Overview Dashboard", 
         "Financial Analysis", 
         "Provider Insights", 
-        "Time Analysis", 
+        "Trend Analysis", 
         "Medical Analysis"
     ])
     
@@ -645,7 +645,7 @@ def main():
                 latest_year = fraud_trend['ClaimYear'].max()
                 latest_count = fraud_trend[fraud_trend['ClaimYear'] == latest_year]['Count'].iloc[0] if not fraud_trend[fraud_trend['ClaimYear'] == latest_year].empty else 0
                 add_graph_insights(
-                    "Time Analysis",
+                    "Trend Analysis",
                     f"• Latest year ({latest_year}) fraud cases: {latest_count:,}<br>• Monitor for seasonal or yearly patterns in fraud detection"
                 )
         
